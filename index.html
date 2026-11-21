@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Expense Analyzer - Dashboard analitik pengeluaran pribadi" />
+  <title>Expense Analyzer</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            teal: { DEFAULT: '#0A7C6E', 50: '#E6F4F2', 100: '#B3DDD9', 200: '#80C6C0', 300: '#4DAFA7', 400: '#2A9C93', 500: '#0A7C6E', 600: '#096B5F', 700: '#075A50', 800: '#054840', 900: '#033631' },
+            amber: { DEFAULT: '#F59E0B', 50: '#FFFBEB', 100: '#FEF3C7', 300: '#FCD34D', 500: '#F59E0B', 600: '#D97706', 700: '#B45309' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-100 transition-colors duration-300 min-h-screen">
+
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-950 transition-opacity duration-500" role="status" aria-label="Memuat data">
+    <div class="text-center">
+      <div class="inline-block w-14 h-14 border-4 border-teal-200 border-t-teal-500 rounded-full animate-spin mb-4"></div>
+      <p class="text-teal-600 dark:text-teal-400 font-semibold text-lg">Memuat data...</p>
+    </div>
+  </div>
+
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside id="sidebar" class="sidebar-transition w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col z-30 shadow-lg" aria-label="Navigasi sidebar">
+      
+      <!-- Logo -->
+      <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-gray-800">
+        <div class="flex items-center gap-3">
+          <!-- Dino logo image -->
+          <img src="dino.png" alt="Paydaynosaur dino logo"
+               class="w-10 h-10 object-contain flex-shrink-0 drop-shadow"
+               onerror="this.style.display='none'"/>
+          <span class="font-bold text-lg text-teal-400 dark:text-teal-400 sidebar-label tracking-wide">PAY<span class="text-amber-400">DAYNOSAUR</span></span>
+        </div>
+        <button id="sidebarToggle" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Toggle sidebar">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Nav links -->
+      <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto" aria-label="Menu navigasi">
+        <a href="#kpi" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-teal-50 dark:hover:bg-teal-950 hover:text-teal-600 dark:hover:text-teal-400 transition-all group" aria-label="KPI Overview">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+          <span class="sidebar-label font-medium text-sm">KPI Overview</span>
+        </a>
+        <a href="#charts" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-teal-50 dark:hover:bg-teal-950 hover:text-teal-600 dark:hover:text-teal-400 transition-all group" aria-label="Visualisasi">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+          <span class="sidebar-label font-medium text-sm">Visualisasi</span>
+        </a>
+        <a href="#insights" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-teal-50 dark:hover:bg-teal-950 hover:text-teal-600 dark:hover:text-teal-400 transition-all group" aria-label="Insight Otomatis">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+          <span class="sidebar-label font-medium text-sm">Insight Otomatis</span>
+        </a>
+        <a href="#transactions" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-teal-50 dark:hover:bg-teal-950 hover:text-teal-600 dark:hover:text-teal-400 transition-all group" aria-label="Transaksi">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          <span class="sidebar-label font-medium text-sm">Transaksi</span>
+        </a>
+        <button id="sidebarAddBtn" class="nav-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-teal-50 dark:hover:bg-teal-950 hover:text-teal-600 dark:hover:text-teal-400 transition-all" aria-label="Tambah pengeluaran baru">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <span class="sidebar-label font-medium text-sm">Tambah Pengeluaran</span>
+        </button>
+      </nav>
+
+      <!-- Dark mode toggle -->
+      <div class="px-3 py-4 border-t border-gray-200 dark:border-gray-800">
+        <button id="darkModeToggle" class="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all" aria-label="Toggle dark mode">
+          <svg id="sunIcon" class="w-5 h-5 flex-shrink-0 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg id="moonIcon" class="w-5 h-5 flex-shrink-0 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          <span class="sidebar-label text-sm font-medium">Mode Gelap</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="flex-1 overflow-y-auto" id="mainContent">
+
+      <!-- Top Header -->
+      <header class="sticky top-0 z-20 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 px-4 md:px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <button id="mobileSidebarToggle" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Buka sidebar">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <div>
+            <h1 class="text-lg font-bold text-gray-900 dark:text-white">Dashboard Keuangan</h1>
+            <p class="text-xs text-gray-500 dark:text-gray-400" id="dateRangeDisplay">Memuat data...</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="headerAddBtn" class="flex items-center gap-2 px-3 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-lg transition-colors text-sm font-semibold shadow-sm" aria-label="Tambah pengeluaran baru">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span class="hidden sm:inline">Tambah</span>
+          </button>
+          <button id="exportCsvBtn" class="flex items-center gap-2 px-3 py-2 bg-teal-50 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 rounded-lg hover:bg-teal-100 dark:hover:bg-teal-900/70 transition-colors text-sm font-medium border border-teal-200 dark:border-teal-800" aria-label="Export CSV">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span class="hidden sm:inline">Export CSV</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="px-4 md:px-6 py-5 space-y-6 max-w-screen-2xl mx-auto">
+
+        <!-- ===== FILTER PANEL ===== -->
+        <section aria-label="Panel filter" class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-4">
+          <div class="flex flex-wrap items-end gap-3">
+            <!-- Bulan/Rentang Tanggal -->
+            <div class="flex flex-col gap-1 min-w-[130px]">
+              <label for="filterStartDate" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Dari Tanggal</label>
+              <input type="date" id="filterStartDate" class="filter-input px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 dark:focus:ring-teal-600 transition" aria-label="Tanggal mulai filter"/>
+            </div>
+            <div class="flex flex-col gap-1 min-w-[130px]">
+              <label for="filterEndDate" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Sampai Tanggal</label>
+              <input type="date" id="filterEndDate" class="filter-input px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 dark:focus:ring-teal-600 transition" aria-label="Tanggal akhir filter"/>
+            </div>
+            <!-- Kategori -->
+            <div class="flex flex-col gap-1 min-w-[150px]">
+              <label for="filterKategori" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Kategori</label>
+              <select id="filterKategori" class="filter-input px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 transition" aria-label="Filter kategori">
+                <option value="">Semua Kategori</option>
+                <option>Makanan</option>
+                <option>Transportasi</option>
+                <option>Belanja</option>
+                <option>Tagihan</option>
+                <option>Hiburan</option>
+                <option>Pendidikan</option>
+                <option>Kesehatan</option>
+              </select>
+            </div>
+            <!-- Metode Pembayaran -->
+            <div class="flex flex-col gap-1 min-w-[160px]">
+              <label for="filterMetode" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Metode Bayar</label>
+              <select id="filterMetode" class="filter-input px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 transition" aria-label="Filter metode pembayaran">
+                <option value="">Semua Metode</option>
+                <option>Tunai</option>
+                <option>Debit</option>
+                <option>E-Wallet</option>
+                <option>Kartu Kredit</option>
+              </select>
+            </div>
+            <!-- Tipe -->
+            <div class="flex flex-col gap-1 min-w-[140px]">
+              <label for="filterTipe" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Tipe</label>
+              <select id="filterTipe" class="filter-input px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 transition" aria-label="Filter tipe pengeluaran">
+                <option value="">Semua Tipe</option>
+                <option>Kebutuhan</option>
+                <option>Keinginan</option>
+              </select>
+            </div>
+            <!-- Buttons -->
+            <div class="flex gap-2 ml-auto">
+              <button id="applyFilter" class="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-lg text-sm font-semibold transition-colors shadow-sm" aria-label="Terapkan filter">Terapkan</button>
+              <button id="resetFilter" class="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg text-sm font-semibold transition-colors" aria-label="Reset filter">Reset</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== KPI CARDS ===== -->
+        <section id="kpi" aria-label="KPI Overview" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+          <!-- Total Pengeluaran -->
+          <div class="kpi-card bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5 flex flex-col gap-2 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Total Pengeluaran</span>
+              <div class="w-9 h-9 rounded-xl bg-teal-50 dark:bg-teal-900/40 flex items-center justify-center">
+                <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+            </div>
+            <div id="kpiTotal" class="text-2xl font-bold text-gray-900 dark:text-white skeleton-box min-h-[2rem]"></div>
+            <div class="text-xs text-gray-500 dark:text-gray-400" id="kpiTotalSub"></div>
+          </div>
+          <!-- Jumlah Transaksi -->
+          <div class="kpi-card bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5 flex flex-col gap-2 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Jumlah Transaksi</span>
+              <div class="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-900/40 flex items-center justify-center">
+                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              </div>
+            </div>
+            <div id="kpiCount" class="text-2xl font-bold text-gray-900 dark:text-white skeleton-box min-h-[2rem]"></div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">transaksi tercatat</div>
+          </div>
+          <!-- Rata-rata per Hari -->
+          <div class="kpi-card bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5 flex flex-col gap-2 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Rata-rata/Hari</span>
+              <div class="w-9 h-9 rounded-xl bg-purple-50 dark:bg-purple-900/40 flex items-center justify-center">
+                <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              </div>
+            </div>
+            <div id="kpiAvg" class="text-2xl font-bold text-gray-900 dark:text-white skeleton-box min-h-[2rem]"></div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">per hari aktif</div>
+          </div>
+          <!-- Kategori Terbesar -->
+          <div class="kpi-card bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5 flex flex-col gap-2 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Kategori Terbesar</span>
+              <div class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-900/40 flex items-center justify-center">
+                <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+              </div>
+            </div>
+            <div id="kpiTopCat" class="text-xl font-bold text-gray-900 dark:text-white skeleton-box min-h-[2rem]"></div>
+            <div class="text-xs text-gray-500 dark:text-gray-400" id="kpiTopCatSub"></div>
+          </div>
+          <!-- Sisa Anggaran -->
+          <div class="kpi-card bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5 flex flex-col gap-2 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Sisa Anggaran</span>
+              <div class="w-9 h-9 rounded-xl bg-green-50 dark:bg-green-900/40 flex items-center justify-center">
+                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+            </div>
+            <div id="kpiBudgetLeft" class="text-2xl font-bold text-gray-900 dark:text-white skeleton-box min-h-[2rem]"></div>
+            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mt-1">
+              <div id="kpiBudgetBar" class="h-1.5 rounded-full transition-all duration-700" style="width:0%"></div>
+            </div>
+            <div class="text-xs text-gray-500 dark:text-gray-400" id="kpiBudgetPct"></div>
+          </div>
+        </section>
+
+        <!-- ===== CHARTS SECTION ===== -->
+        <section id="charts" aria-label="Visualisasi data">
+          <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+
+            <!-- Tren Pengeluaran Harian -->
+            <div class="chart-card xl:col-span-2 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
+              <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">📈 Tren Pengeluaran Harian</h2>
+              <div class="relative h-56">
+                <canvas id="chartDaily" aria-label="Grafik tren pengeluaran harian" role="img"></canvas>
+              </div>
+            </div>
+
+            <!-- Pengeluaran per Kategori -->
+            <div class="chart-card bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
+              <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">🍩 Pengeluaran per Kategori</h2>
+              <div class="relative h-56">
+                <canvas id="chartCategory" aria-label="Grafik pengeluaran per kategori" role="img"></canvas>
+              </div>
+            </div>
+
+            <!-- Budget vs Realisasi -->
+            <div class="chart-card xl:col-span-2 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
+              <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">📊 Budget vs Realisasi per Kategori</h2>
+              <div class="relative h-56">
+                <canvas id="chartBudget" aria-label="Grafik budget vs realisasi" role="img"></canvas>
+              </div>
+            </div>
+
+            <!-- Metode Pembayaran -->
+            <div class="chart-card bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
+              <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">💳 Metode Pembayaran</h2>
+              <div class="relative h-56">
+                <canvas id="chartPayment" aria-label="Grafik metode pembayaran" role="img"></canvas>
+              </div>
+            </div>
+
+            <!-- Pola per Hari Seminggu -->
+            <div class="chart-card bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
+              <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">📅 Pola per Hari dalam Seminggu</h2>
+              <div class="relative h-56">
+                <canvas id="chartWeekday" aria-label="Grafik pola hari dalam seminggu" role="img"></canvas>
+              </div>
+            </div>
+
+            <!-- Kebutuhan vs Keinginan -->
+            <div class="chart-card bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
+              <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">⚖️ Kebutuhan vs Keinginan</h2>
+              <div class="relative h-56">
+                <canvas id="chartNeedWant" aria-label="Grafik kebutuhan vs keinginan" role="img"></canvas>
+              </div>
+            </div>
+
+            <!-- Akumulasi vs Batas Anggaran -->
+            <div class="chart-card xl:col-span-3 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
+              <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">📉 Akumulasi Pengeluaran Bulan Ini vs Batas Anggaran</h2>
+              <div class="relative h-56">
+                <canvas id="chartAccumulated" aria-label="Grafik akumulasi pengeluaran bulan ini" role="img"></canvas>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ===== INSIGHTS PANEL ===== -->
+        <section id="insights" aria-label="Insight otomatis" class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
+          <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">🧠 Insight Otomatis</h2>
+          <div id="insightList" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
+        </section>
+
+        <!-- ===== TOP 10 TRANSACTIONS ===== -->
+        <section id="transactions" aria-label="Top 10 transaksi terbesar" class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
+          <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">🏆 Top 10 Transaksi Terbesar</h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm" aria-label="Tabel top 10 transaksi terbesar">
+              <thead>
+                <tr class="border-b border-gray-200 dark:border-gray-800">
+                  <th class="text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">#</th>
+                  <th class="text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Tanggal</th>
+                  <th class="text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Deskripsi</th>
+                  <th class="text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Kategori</th>
+                  <th class="text-right py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Nominal</th>
+                </tr>
+              </thead>
+              <tbody id="top10TableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ===== TRANSACTION HISTORY TABLE ===== -->
+        <section aria-label="Riwayat transaksi" class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300">📋 Riwayat Transaksi</h2>
+            <div class="relative">
+              <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input type="text" id="searchInput" placeholder="Cari deskripsi..." class="pl-9 pr-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 w-56 transition" aria-label="Cari transaksi"/>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm" aria-label="Tabel riwayat transaksi">
+              <thead>
+                <tr class="border-b border-gray-200 dark:border-gray-800">
+                  <th class="sortable text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="tanggal">
+                    Tanggal <span class="sort-icon text-gray-300">↕</span>
+                  </th>
+                  <th class="sortable text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="deskripsi">
+                    Deskripsi <span class="sort-icon text-gray-300">↕</span>
+                  </th>
+                  <th class="sortable text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="kategori">
+                    Kategori <span class="sort-icon text-gray-300">↕</span>
+                  </th>
+                  <th class="sortable text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="metode_pembayaran">
+                    Metode <span class="sort-icon text-gray-300">↕</span>
+                  </th>
+                  <th class="sortable text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="tipe">
+                    Tipe <span class="sort-icon text-gray-300">↕</span>
+                  </th>
+                  <th class="sortable text-right py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="nominal">
+                    Nominal <span class="sort-icon text-gray-300">↕</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="historyTableBody"></tbody>
+            </table>
+            <div id="tableEmpty" class="hidden text-center py-10 text-gray-400 dark:text-gray-600 text-sm">
+              Tidak ada transaksi yang sesuai filter.
+            </div>
+          </div>
+          <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-400">
+            <span id="tableCount">0 transaksi</span>
+            <div class="flex gap-2">
+              <button id="prevPage" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-40 transition" aria-label="Halaman sebelumnya">← Prev</button>
+              <span id="pageIndicator" class="px-3 py-1.5">1</span>
+              <button id="nextPage" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-40 transition" aria-label="Halaman berikutnya">Next →</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== INPUT FORM SECTION ===== -->
+        <section id="inputForm" aria-label="Tambah pengeluaran baru" class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
+          <div class="flex items-center justify-between mb-5">
+            <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300">➕ Tambah Pengeluaran Baru</h2>
+            <span id="formSuccessBadge" class="hidden items-center gap-1.5 px-3 py-1 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 rounded-full text-xs font-semibold">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+              Transaksi ditambahkan!
+            </span>
+          </div>
+          <form id="addExpenseForm" novalidate autocomplete="off">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+              <!-- Tanggal -->
+              <div class="flex flex-col gap-1">
+                <label for="inputTanggal" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Tanggal <span class="text-red-400">*</span></label>
+                <input type="date" id="inputTanggal" name="tanggal" required
+                  class="form-input px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 dark:focus:ring-teal-600 transition"
+                  aria-required="true" aria-describedby="errTanggal"/>
+                <span id="errTanggal" class="text-xs text-red-500 hidden" role="alert">Tanggal wajib diisi.</span>
+              </div>
+
+              <!-- Deskripsi -->
+              <div class="flex flex-col gap-1 sm:col-span-2 lg:col-span-1">
+                <label for="inputDeskripsi" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Deskripsi <span class="text-red-400">*</span></label>
+                <input type="text" id="inputDeskripsi" name="deskripsi" required maxlength="100" placeholder="cth. Makan siang di warteg"
+                  class="form-input px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 dark:focus:ring-teal-600 transition"
+                  aria-required="true" aria-describedby="errDeskripsi"/>
+                <span id="errDeskripsi" class="text-xs text-red-500 hidden" role="alert">Deskripsi wajib diisi.</span>
+              </div>
+
+              <!-- Nominal -->
+              <div class="flex flex-col gap-1">
+                <label for="inputNominal" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Nominal (Rp) <span class="text-red-400">*</span></label>
+                <div class="relative">
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-medium pointer-events-none">Rp</span>
+                  <input type="number" id="inputNominal" name="nominal" required min="1" max="999999999" placeholder="50000"
+                    class="form-input pl-9 pr-3 py-2.5 w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 dark:focus:ring-teal-600 transition"
+                    aria-required="true" aria-describedby="errNominal"/>
+                </div>
+                <span id="errNominal" class="text-xs text-red-500 hidden" role="alert">Nominal harus lebih dari 0.</span>
+              </div>
+
+              <!-- Kategori -->
+              <div class="flex flex-col gap-1">
+                <label for="inputKategori" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Kategori <span class="text-red-400">*</span></label>
+                <select id="inputKategori" name="kategori" required
+                  class="form-input px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 dark:focus:ring-teal-600 transition"
+                  aria-required="true" aria-describedby="errKategori">
+                  <option value="">— Pilih Kategori —</option>
+                  <option>Makanan</option>
+                  <option>Transportasi</option>
+                  <option>Belanja</option>
+                  <option>Tagihan</option>
+                  <option>Hiburan</option>
+                  <option>Pendidikan</option>
+                  <option>Kesehatan</option>
+                </select>
+                <span id="errKategori" class="text-xs text-red-500 hidden" role="alert">Pilih kategori.</span>
+              </div>
+
+              <!-- Metode Pembayaran -->
+              <div class="flex flex-col gap-1">
+                <label for="inputMetode" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Metode Pembayaran <span class="text-red-400">*</span></label>
+                <select id="inputMetode" name="metode_pembayaran" required
+                  class="form-input px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 dark:focus:ring-teal-600 transition"
+                  aria-required="true" aria-describedby="errMetode">
+                  <option value="">— Pilih Metode —</option>
+                  <option>Tunai</option>
+                  <option>Debit</option>
+                  <option>E-Wallet</option>
+                  <option>Kartu Kredit</option>
+                </select>
+                <span id="errMetode" class="text-xs text-red-500 hidden" role="alert">Pilih metode pembayaran.</span>
+              </div>
+
+              <!-- Tipe -->
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Tipe Pengeluaran <span class="text-red-400">*</span></label>
+                <div class="flex gap-3 mt-1" role="radiogroup" aria-label="Tipe pengeluaran">
+                  <label class="flex items-center gap-2 cursor-pointer select-none">
+                    <input type="radio" name="tipe" value="Kebutuhan" id="tipeKebutuhan" class="accent-teal-500 w-4 h-4" required/>
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Kebutuhan</span>
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer select-none">
+                    <input type="radio" name="tipe" value="Keinginan" id="tipeKeinginan" class="accent-pink-500 w-4 h-4"/>
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Keinginan</span>
+                  </label>
+                </div>
+                <span id="errTipe" class="text-xs text-red-500 hidden" role="alert">Pilih tipe pengeluaran.</span>
+              </div>
+
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex flex-wrap items-center gap-3 mt-5 pt-4 border-t border-gray-100 dark:border-gray-800">
+              <button type="submit" id="submitExpenseBtn"
+                class="flex items-center gap-2 px-5 py-2.5 bg-teal-500 hover:bg-teal-600 active:bg-teal-700 text-white rounded-xl text-sm font-semibold transition-colors shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                Simpan Transaksi
+              </button>
+              <button type="button" id="clearFormBtn"
+                class="px-5 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl text-sm font-semibold transition-colors">
+                Bersihkan Form
+              </button>
+              <span class="ml-auto text-xs text-gray-400 dark:text-gray-600">* Wajib diisi</span>
+            </div>
+          </form>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-4 text-xs text-gray-400 dark:text-gray-600">
+          Expense Analyzer &copy; 2026 &mdash; Data diperbarui secara dinamis
+        </footer>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div id="sidebarOverlay" class="fixed inset-0 bg-black/40 z-20 hidden lg:hidden" aria-hidden="true"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+/* ============================================================
+   Expense Analyzer — Custom Styles (Tailwind supplement)
+   ============================================================ */
+
+/* ---- Sidebar transitions ---- */
+.sidebar-transition {
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Collapsed sidebar: icon-only mode on desktop */
+.sidebar-collapsed .sidebar-label {
+  display: none;
+}
+.sidebar-collapsed {
+  width: 4.5rem !important;
+}
+.sidebar-collapsed .nav-link {
+  justify-content: center;
+}
+.sidebar-collapsed .nav-link svg {
+  margin: 0;
+}
+
+/* Mobile sidebar: off-canvas */
+@media (max-width: 1023px) {
+  #sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    transform: translateX(-100%);
+  }
+  #sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+}
+
+/* ---- Loading skeleton animation ---- */
+.skeleton-box {
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s infinite;
+  border-radius: 0.5rem;
+}
+.dark .skeleton-box {
+  background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s infinite;
+}
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ---- KPI Cards ---- */
+.kpi-card {
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.kpi-card:hover {
+  transform: translateY(-2px);
+}
+
+/* ---- Chart cards ---- */
+.chart-card {
+  transition: box-shadow 0.2s;
+}
+.chart-card:hover {
+  box-shadow: 0 4px 24px 0 rgba(10, 124, 110, 0.08);
+}
+
+/* ---- Insight badges ---- */
+.insight-safe {
+  border-left: 4px solid #10b981;
+  background: #f0fdf4;
+}
+.dark .insight-safe {
+  background: rgba(16, 185, 129, 0.08);
+  border-left-color: #34d399;
+}
+
+.insight-warning {
+  border-left: 4px solid #f59e0b;
+  background: #fffbeb;
+}
+.dark .insight-warning {
+  background: rgba(245, 158, 11, 0.08);
+  border-left-color: #fbbf24;
+}
+
+.insight-danger {
+  border-left: 4px solid #ef4444;
+  background: #fef2f2;
+}
+.dark .insight-danger {
+  background: rgba(239, 68, 68, 0.08);
+  border-left-color: #f87171;
+}
+
+/* ---- Table rows ---- */
+#historyTableBody tr,
+#top10TableBody tr {
+  transition: background 0.15s;
+}
+#historyTableBody tr:hover,
+#top10TableBody tr:hover {
+  background: rgba(10, 124, 110, 0.04);
+}
+.dark #historyTableBody tr:hover,
+.dark #top10TableBody tr:hover {
+  background: rgba(10, 124, 110, 0.10);
+}
+
+/* ---- Kategori badges ---- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.badge-Makanan       { background: #fef3c7; color: #92400e; }
+.badge-Transportasi  { background: #dbeafe; color: #1e40af; }
+.badge-Belanja       { background: #ede9fe; color: #5b21b6; }
+.badge-Tagihan       { background: #fee2e2; color: #991b1b; }
+.badge-Hiburan       { background: #fce7f3; color: #9d174d; }
+.badge-Pendidikan    { background: #d1fae5; color: #065f46; }
+.badge-Kesehatan     { background: #e0f2fe; color: #0c4a6e; }
+
+.dark .badge-Makanan       { background: rgba(245,158,11,0.15); color: #fbbf24; }
+.dark .badge-Transportasi  { background: rgba(59,130,246,0.15); color: #60a5fa; }
+.dark .badge-Belanja       { background: rgba(139,92,246,0.15); color: #a78bfa; }
+.dark .badge-Tagihan       { background: rgba(239,68,68,0.15);  color: #f87171; }
+.dark .badge-Hiburan       { background: rgba(236,72,153,0.15); color: #f472b6; }
+.dark .badge-Pendidikan    { background: rgba(16,185,129,0.15); color: #34d399; }
+.dark .badge-Kesehatan     { background: rgba(14,165,233,0.15); color: #38bdf8; }
+
+.badge-Kebutuhan { background: #d1fae5; color: #065f46; }
+.badge-Keinginan { background: #fce7f3; color: #9d174d; }
+
+.dark .badge-Kebutuhan { background: rgba(16,185,129,0.15); color: #34d399; }
+.dark .badge-Keinginan { background: rgba(236,72,153,0.15); color: #f472b6; }
+
+.badge-Tunai        { background: #f3f4f6; color: #374151; }
+.badge-Debit        { background: #dbeafe; color: #1e40af; }
+.badge-E-Wallet     { background: #d1fae5; color: #065f46; }
+.badge-KartuKredit  { background: #ede9fe; color: #5b21b6; }
+
+.dark .badge-Tunai        { background: rgba(107,114,128,0.15); color: #9ca3af; }
+.dark .badge-Debit        { background: rgba(59,130,246,0.15);  color: #60a5fa; }
+.dark .badge-E-Wallet     { background: rgba(16,185,129,0.15);  color: #34d399; }
+.dark .badge-KartuKredit  { background: rgba(139,92,246,0.15);  color: #a78bfa; }
+
+/* ---- Sort icons ---- */
+.sortable .sort-icon { transition: color 0.15s; }
+.sortable:hover .sort-icon { color: #0A7C6E; }
+.sortable.asc .sort-icon  { color: #0A7C6E; }
+.sortable.desc .sort-icon { color: #0A7C6E; }
+
+/* ---- Smooth page transitions ---- */
+.chart-card canvas {
+  transition: opacity 0.3s;
+}
+
+/* ---- Filter inputs ---- */
+.filter-input {
+  color: inherit;
+}
+
+/* ---- Scrollbar (Webkit) ---- */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 999px; }
+.dark ::-webkit-scrollbar-thumb { background: #374151; }
+
+/* ---- Focus visible accessibility ---- */
+*:focus-visible {
+  outline: 2px solid #0A7C6E;
+  outline-offset: 2px;
+}
+
+/* ---- Loading overlay fade-out ---- */
+#loadingOverlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---- Input form field focus highlight ---- */
+#addExpenseForm .form-input:focus {
+  border-color: #0A7C6E;
+}
+
+/* ---- Success badge animation ---- */
+#formSuccessBadge {
+  animation: fadeInDown 0.3s ease;
+}
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
