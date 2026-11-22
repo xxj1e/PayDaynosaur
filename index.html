@@ -69,10 +69,6 @@
           <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
           <span class="sidebar-label font-medium text-sm">Visualisasi</span>
         </a>
-        <a href="#insights" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-teal-50 dark:hover:bg-teal-950 hover:text-teal-600 dark:hover:text-teal-400 transition-all group" aria-label="Insight Otomatis">
-          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-          <span class="sidebar-label font-medium text-sm">Insight Otomatis</span>
-        </a>
         <a href="#transactions" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-teal-50 dark:hover:bg-teal-950 hover:text-teal-600 dark:hover:text-teal-400 transition-all group" aria-label="Transaksi">
           <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
           <span class="sidebar-label font-medium text-sm">Transaksi</span>
@@ -112,9 +108,17 @@
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             <span class="hidden sm:inline">Tambah</span>
           </button>
+          <button id="editBudgetBtn" class="flex items-center gap-2 px-3 py-2 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900/60 transition-colors text-sm font-medium border border-amber-200 dark:border-amber-800" aria-label="Edit anggaran">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            <span class="hidden sm:inline">Anggaran</span>
+          </button>
           <button id="exportCsvBtn" class="flex items-center gap-2 px-3 py-2 bg-teal-50 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 rounded-lg hover:bg-teal-100 dark:hover:bg-teal-900/70 transition-colors text-sm font-medium border border-teal-200 dark:border-teal-800" aria-label="Export CSV">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             <span class="hidden sm:inline">Export CSV</span>
+          </button>
+          <button id="exportPdfBtn" class="flex items-center gap-2 px-3 py-2 bg-purple-50 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/70 transition-colors text-sm font-medium border border-purple-200 dark:border-purple-800" aria-label="Print / Export PDF">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+            <span class="hidden sm:inline">Print/PDF</span>
           </button>
         </div>
       </header>
@@ -124,14 +128,37 @@
         <!-- ===== FILTER PANEL ===== -->
         <section aria-label="Panel filter" class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-4">
           <div class="flex flex-wrap items-end gap-3">
-            <!-- Bulan/Rentang Tanggal -->
-            <div class="flex flex-col gap-1 min-w-[130px]">
-              <label for="filterStartDate" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Dari Tanggal</label>
-              <input type="date" id="filterStartDate" class="filter-input px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 dark:focus:ring-teal-600 transition" aria-label="Tanggal mulai filter"/>
+            <!-- Dari Tanggal — custom datepicker -->
+            <div class="flex flex-col gap-1 min-w-[150px] relative" id="dpStartWrap">
+              <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Dari Tanggal</label>
+              <button type="button" id="dpStartBtn"
+                class="dp-trigger flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm text-left focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+                aria-haspopup="true" aria-expanded="false" aria-label="Pilih tanggal mulai">
+                <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span id="dpStartLabel" class="text-gray-700 dark:text-gray-300">Pilih tanggal</span>
+              </button>
+              <!-- hidden real input still used by JS filter logic -->
+              <input type="date" id="filterStartDate" class="sr-only" aria-hidden="true" tabindex="-1"/>
+              <!-- calendar popup -->
+              <div id="dpStartPop" class="dp-popup hidden absolute top-full left-0 mt-1 z-50
+                bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700
+                rounded-2xl shadow-xl p-4 w-72" role="dialog" aria-label="Kalender dari tanggal">
+              </div>
             </div>
-            <div class="flex flex-col gap-1 min-w-[130px]">
-              <label for="filterEndDate" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Sampai Tanggal</label>
-              <input type="date" id="filterEndDate" class="filter-input px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 dark:focus:ring-teal-600 transition" aria-label="Tanggal akhir filter"/>
+            <!-- Sampai Tanggal — custom datepicker -->
+            <div class="flex flex-col gap-1 min-w-[150px] relative" id="dpEndWrap">
+              <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Sampai Tanggal</label>
+              <button type="button" id="dpEndBtn"
+                class="dp-trigger flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm text-left focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+                aria-haspopup="true" aria-expanded="false" aria-label="Pilih tanggal akhir">
+                <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span id="dpEndLabel" class="text-gray-700 dark:text-gray-300">Pilih tanggal</span>
+              </button>
+              <input type="date" id="filterEndDate" class="sr-only" aria-hidden="true" tabindex="-1"/>
+              <div id="dpEndPop" class="dp-popup hidden absolute top-full left-0 mt-1 z-50
+                bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700
+                rounded-2xl shadow-xl p-4 w-72" role="dialog" aria-label="Kalender sampai tanggal">
+              </div>
             </div>
             <!-- Kategori -->
             <div class="flex flex-col gap-1 min-w-[150px]">
@@ -225,9 +252,9 @@
           <div class="kpi-card bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5 flex flex-col gap-2 hover:shadow-md transition-shadow">
             <div class="flex items-center justify-between">
               <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Sisa Anggaran</span>
-              <div class="w-9 h-9 rounded-xl bg-green-50 dark:bg-green-900/40 flex items-center justify-center">
-                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              </div>
+              <button id="kpiBudgetEditBtn" class="w-9 h-9 rounded-xl bg-green-50 dark:bg-green-900/40 flex items-center justify-center hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-colors group" aria-label="Edit anggaran" title="Edit Anggaran">
+                <svg class="w-5 h-5 text-green-500 group-hover:text-amber-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </button>
             </div>
             <div id="kpiBudgetLeft" class="text-2xl font-bold text-gray-900 dark:text-white skeleton-box min-h-[2rem]"></div>
             <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mt-1">
@@ -300,78 +327,86 @@
           </div>
         </section>
 
-        <!-- ===== INSIGHTS PANEL ===== -->
-        <section id="insights" aria-label="Insight otomatis" class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
-          <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">🧠 Insight Otomatis</h2>
-          <div id="insightList" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
-        </section>
+        <!-- ===== TRANSAKSI — Tab Card ===== -->
+        <section id="transactions" aria-label="Data transaksi" class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
 
-        <!-- ===== TOP 10 TRANSACTIONS ===== -->
-        <section id="transactions" aria-label="Top 10 transaksi terbesar" class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
-          <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">🏆 Top 10 Transaksi Terbesar</h2>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm" aria-label="Tabel top 10 transaksi terbesar">
-              <thead>
-                <tr class="border-b border-gray-200 dark:border-gray-800">
-                  <th class="text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">#</th>
-                  <th class="text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Tanggal</th>
-                  <th class="text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Deskripsi</th>
-                  <th class="text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Kategori</th>
-                  <th class="text-right py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Nominal</th>
-                </tr>
-              </thead>
-              <tbody id="top10TableBody"></tbody>
-            </table>
-          </div>
-        </section>
-
-        <!-- ===== TRANSACTION HISTORY TABLE ===== -->
-        <section aria-label="Riwayat transaksi" class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5">
-          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-            <h2 class="text-sm font-bold text-gray-700 dark:text-gray-300">📋 Riwayat Transaksi</h2>
-            <div class="relative">
+          <!-- Tab header -->
+          <div class="flex items-center justify-between flex-wrap gap-3 mb-4">
+            <div class="flex gap-1 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl">
+              <button id="tabTop10" class="tab-btn active-tab px-3 py-1.5 rounded-lg text-xs font-semibold transition-all" aria-label="Tab top 10 transaksi">🏆 Top 10</button>
+              <button id="tabHistory" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-500 dark:text-gray-400 transition-all hover:text-gray-700 dark:hover:text-gray-200" aria-label="Tab riwayat transaksi">📋 Riwayat</button>
+            </div>
+            <!-- Search — only shown on history tab -->
+            <div id="searchWrap" class="relative hidden">
               <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-              <input type="text" id="searchInput" placeholder="Cari deskripsi..." class="pl-9 pr-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 w-56 transition" aria-label="Cari transaksi"/>
+              <input type="text" id="searchInput" placeholder="Cari deskripsi..." class="pl-9 pr-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 w-48 transition" aria-label="Cari transaksi"/>
             </div>
           </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm" aria-label="Tabel riwayat transaksi">
-              <thead>
-                <tr class="border-b border-gray-200 dark:border-gray-800">
-                  <th class="sortable text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="tanggal">
-                    Tanggal <span class="sort-icon text-gray-300">↕</span>
-                  </th>
-                  <th class="sortable text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="deskripsi">
-                    Deskripsi <span class="sort-icon text-gray-300">↕</span>
-                  </th>
-                  <th class="sortable text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="kategori">
-                    Kategori <span class="sort-icon text-gray-300">↕</span>
-                  </th>
-                  <th class="sortable text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="metode_pembayaran">
-                    Metode <span class="sort-icon text-gray-300">↕</span>
-                  </th>
-                  <th class="sortable text-left py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="tipe">
-                    Tipe <span class="sort-icon text-gray-300">↕</span>
-                  </th>
-                  <th class="sortable text-right py-2.5 px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="nominal">
-                    Nominal <span class="sort-icon text-gray-300">↕</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody id="historyTableBody"></tbody>
-            </table>
-            <div id="tableEmpty" class="hidden text-center py-10 text-gray-400 dark:text-gray-600 text-sm">
-              Tidak ada transaksi yang sesuai filter.
+
+          <!-- TOP 10 panel -->
+          <div id="panelTop10">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm" aria-label="Tabel top 10 transaksi terbesar">
+                <thead>
+                  <tr class="border-b border-gray-200 dark:border-gray-800">
+                    <th class="text-left py-2 px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide w-8">#</th>
+                    <th class="text-left py-2 px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide">Deskripsi</th>
+                    <th class="text-left py-2 px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide hidden sm:table-cell">Kategori</th>
+                    <th class="text-left py-2 px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide hidden md:table-cell">Tanggal</th>
+                    <th class="text-right py-2 px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide">Nominal</th>
+                  </tr>
+                </thead>
+                <tbody id="top10TableBody"></tbody>
+              </table>
             </div>
           </div>
-          <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-400">
-            <span id="tableCount">0 transaksi</span>
-            <div class="flex gap-2">
-              <button id="prevPage" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-40 transition" aria-label="Halaman sebelumnya">← Prev</button>
-              <span id="pageIndicator" class="px-3 py-1.5">1</span>
-              <button id="nextPage" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-40 transition" aria-label="Halaman berikutnya">Next →</button>
+
+          <!-- HISTORY panel -->
+          <div id="panelHistory" class="hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm" aria-label="Tabel riwayat transaksi">
+                <thead>
+                  <tr class="border-b border-gray-200 dark:border-gray-800">
+                    <th class="sortable text-left py-2 px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="tanggal">Tanggal <span class="sort-icon text-gray-300">↕</span></th>
+                    <th class="sortable text-left py-2 px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="deskripsi">Deskripsi <span class="sort-icon text-gray-300">↕</span></th>
+                    <th class="sortable text-left py-2 px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none hidden sm:table-cell" data-col="kategori">Kategori <span class="sort-icon text-gray-300">↕</span></th>
+                    <th class="sortable text-left py-2 px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none hidden md:table-cell" data-col="metode_pembayaran">Metode <span class="sort-icon text-gray-300">↕</span></th>
+                    <th class="sortable text-left py-2 px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none hidden lg:table-cell" data-col="tipe">Tipe <span class="sort-icon text-gray-300">↕</span></th>
+                    <th class="sortable text-right py-2 px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide cursor-pointer hover:text-teal-600 select-none" data-col="nominal">Nominal <span class="sort-icon text-gray-300">↕</span></th>
+                    <th class="text-center py-2 px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide w-20">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="historyTableBody"></tbody>
+              </table>
+              <!-- Empty state with dino illustration -->
+              <div id="tableEmpty" class="hidden text-center py-12">
+                <svg class="w-20 h-20 mx-auto mb-3 opacity-30" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <ellipse cx="50" cy="70" rx="30" ry="6" fill="#d1d5db"/>
+                  <path d="M30 55 Q28 40 35 30 Q42 18 55 20 Q70 22 72 38 Q74 50 68 56 Q62 62 50 62 Q38 62 30 55Z" fill="#9ca3af"/>
+                  <circle cx="62" cy="32" r="4" fill="white"/>
+                  <circle cx="63" cy="32" r="2" fill="#374151"/>
+                  <path d="M55 44 Q60 47 65 44" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                  <path d="M30 55 L18 60 L20 65 L28 62" fill="#9ca3af"/>
+                  <path d="M32 58 L22 68 L26 70 L35 62" fill="#9ca3af"/>
+                  <path d="M68 54 L80 52 L80 48 L70 50" fill="#9ca3af"/>
+                  <path d="M66 58 L78 62 L79 58 L68 54" fill="#9ca3af"/>
+                  <path d="M50 62 L48 72 L52 72 L52 62Z" fill="#9ca3af"/>
+                  <path d="M56 62 L54 72 L58 72 L58 62Z" fill="#9ca3af"/>
+                </svg>
+                <p class="text-gray-400 dark:text-gray-600 font-semibold text-sm">Tidak ada transaksi ditemukan</p>
+                <p class="text-gray-300 dark:text-gray-700 text-xs mt-1">Coba ubah filter atau tambahkan transaksi baru</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-400">
+              <span id="tableCount">0 transaksi</span>
+              <div class="flex gap-1.5">
+                <button id="prevPage" class="px-2.5 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-40 transition" aria-label="Halaman sebelumnya">←</button>
+                <span id="pageIndicator" class="px-2.5 py-1.5">1</span>
+                <button id="nextPage" class="px-2.5 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-40 transition" aria-label="Halaman berikutnya">→</button>
+              </div>
             </div>
           </div>
+
         </section>
 
         <!-- ===== INPUT FORM SECTION ===== -->
@@ -484,8 +519,8 @@
         </section>
 
         <!-- Footer -->
-        <footer class="text-center py-4 text-xs text-gray-400 dark:text-gray-600">
-          Expense Analyzer &copy; 2026 &mdash; Data diperbarui secara dinamis
+        <footer class="text-center py-4 text-xs text-gray-400 dark:text-gray-600 print:hidden">
+          Paydaynosaur &copy; 2026 &mdash; Data diperbarui secara dinamis
         </footer>
 
       </div>
@@ -494,6 +529,146 @@
 
   <!-- Mobile Sidebar Overlay -->
   <div id="sidebarOverlay" class="fixed inset-0 bg-black/40 z-20 hidden lg:hidden" aria-hidden="true"></div>
+
+  <!-- ===== TOAST NOTIFICATION ===== -->
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-2 pointer-events-none" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ===== CONFIRM DIALOG ===== -->
+  <div id="confirmDialog" class="fixed inset-0 z-[90] hidden items-center justify-center p-4" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="confirmBackdrop"></div>
+    <div class="relative bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 w-full max-w-sm p-6 text-center">
+      <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+        <svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.072 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+      </div>
+      <h3 id="confirmTitle" class="text-base font-bold text-gray-900 dark:text-white mb-2">Hapus Transaksi?</h3>
+      <p id="confirmMessage" class="text-sm text-gray-500 dark:text-gray-400 mb-6">Tindakan ini tidak dapat dibatalkan.</p>
+      <div class="flex gap-3">
+        <button id="confirmCancel" class="flex-1 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl text-sm font-semibold transition-colors">Batal</button>
+        <button id="confirmOk" class="flex-1 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-semibold transition-colors shadow-sm">Ya, Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== EDIT TRANSACTION MODAL ===== -->
+  <div id="editModal" class="fixed inset-0 z-[80] hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="editModalBackdrop"></div>
+    <div class="relative bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <!-- Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800 sticky top-0 bg-white dark:bg-gray-900 z-10 rounded-t-2xl">
+        <div>
+          <h2 id="editModalTitle" class="text-base font-bold text-gray-900 dark:text-white">✏️ Edit Transaksi</h2>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Perbarui detail transaksi di bawah ini</p>
+        </div>
+        <button id="editModalClose" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Tutup modal edit">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <!-- Form body -->
+      <div class="px-6 py-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Tanggal -->
+          <div class="flex flex-col gap-1">
+            <label for="editTanggal" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Tanggal <span class="text-red-400">*</span></label>
+            <input type="date" id="editTanggal" required class="form-input px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 transition"/>
+            <span id="editErrTanggal" class="text-xs text-red-500 hidden" role="alert">Tanggal wajib diisi.</span>
+          </div>
+          <!-- Deskripsi -->
+          <div class="flex flex-col gap-1">
+            <label for="editDeskripsi" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Deskripsi <span class="text-red-400">*</span></label>
+            <input type="text" id="editDeskripsi" maxlength="100" required class="form-input px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 transition"/>
+            <span id="editErrDeskripsi" class="text-xs text-red-500 hidden" role="alert">Deskripsi wajib diisi.</span>
+          </div>
+          <!-- Nominal -->
+          <div class="flex flex-col gap-1">
+            <label for="editNominal" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Nominal (Rp) <span class="text-red-400">*</span></label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-medium pointer-events-none">Rp</span>
+              <input type="number" id="editNominal" min="1" required class="form-input pl-9 pr-3 py-2.5 w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 transition"/>
+            </div>
+            <span id="editErrNominal" class="text-xs text-red-500 hidden" role="alert">Nominal harus lebih dari 0.</span>
+          </div>
+          <!-- Kategori -->
+          <div class="flex flex-col gap-1">
+            <label for="editKategori" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Kategori <span class="text-red-400">*</span></label>
+            <select id="editKategori" required class="form-input px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 transition">
+              <option value="">— Pilih Kategori —</option>
+              <option>Makanan</option><option>Transportasi</option><option>Belanja</option>
+              <option>Tagihan</option><option>Hiburan</option><option>Pendidikan</option><option>Kesehatan</option>
+            </select>
+            <span id="editErrKategori" class="text-xs text-red-500 hidden" role="alert">Pilih kategori.</span>
+          </div>
+          <!-- Metode -->
+          <div class="flex flex-col gap-1">
+            <label for="editMetode" class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Metode Pembayaran <span class="text-red-400">*</span></label>
+            <select id="editMetode" required class="form-input px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 transition">
+              <option value="">— Pilih Metode —</option>
+              <option>Tunai</option><option>Debit</option><option>E-Wallet</option><option>Kartu Kredit</option>
+            </select>
+            <span id="editErrMetode" class="text-xs text-red-500 hidden" role="alert">Pilih metode pembayaran.</span>
+          </div>
+          <!-- Tipe -->
+          <div class="flex flex-col gap-1">
+            <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Tipe Pengeluaran <span class="text-red-400">*</span></label>
+            <div class="flex gap-4 mt-1" role="radiogroup">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="editTipe" value="Kebutuhan" id="editTipeKebutuhan" class="accent-teal-500 w-4 h-4"/>
+                <span class="text-sm text-gray-700 dark:text-gray-300">Kebutuhan</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="editTipe" value="Keinginan" id="editTipeKeinginan" class="accent-pink-500 w-4 h-4"/>
+                <span class="text-sm text-gray-700 dark:text-gray-300">Keinginan</span>
+              </label>
+            </div>
+            <span id="editErrTipe" class="text-xs text-red-500 hidden" role="alert">Pilih tipe pengeluaran.</span>
+          </div>
+        </div>
+      </div>
+      <!-- Footer buttons -->
+      <div class="flex gap-3 px-6 py-4 border-t border-gray-200 dark:border-gray-800">
+        <button id="editSaveBtn" class="flex-1 py-2.5 bg-teal-500 hover:bg-teal-600 text-white rounded-xl text-sm font-semibold transition-colors shadow-sm">Simpan Perubahan</button>
+        <button id="editCancelBtn" class="px-5 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl text-sm font-semibold transition-colors">Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== BUDGET ALERT STRIP (injected by JS, placeholder) ===== -->
+
+  <!-- ===== BUDGET EDIT MODAL ===== -->
+  <div id="budgetModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="budgetModalTitle">
+    <!-- Backdrop -->
+    <div id="budgetModalBackdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+    <!-- Modal panel -->
+    <div class="relative bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <!-- Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800 sticky top-0 bg-white dark:bg-gray-900 z-10 rounded-t-2xl">
+        <div>
+          <h2 id="budgetModalTitle" class="text-base font-bold text-gray-900 dark:text-white">✏️ Atur Anggaran</h2>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Sesuaikan batas pengeluaran per kategori</p>
+        </div>
+        <button id="budgetModalClose" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Tutup modal">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <!-- Budget inputs -->
+      <div class="px-6 py-4 space-y-3" id="budgetInputList">
+        <!-- Injected by JS -->
+      </div>
+      <!-- Total row -->
+      <div class="px-6 py-3 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between">
+        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Total Anggaran</span>
+        <span id="budgetModalTotal" class="text-sm font-bold text-teal-600 dark:text-teal-400"></span>
+      </div>
+      <!-- Footer buttons -->
+      <div class="flex gap-3 px-6 py-4 border-t border-gray-200 dark:border-gray-800">
+        <button id="budgetSaveBtn" class="flex-1 py-2.5 bg-teal-500 hover:bg-teal-600 text-white rounded-xl text-sm font-semibold transition-colors shadow-sm">
+          Simpan Anggaran
+        </button>
+        <button id="budgetResetBtn" class="px-4 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl text-sm font-semibold transition-colors" title="Reset ke anggaran default dari expenses.json">
+          Reset Default
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
